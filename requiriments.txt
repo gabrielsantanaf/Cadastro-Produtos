@@ -1,0 +1,12 @@
+fastapi==0.116.1
+uvicorn==0.35.0
+requests==2.32.4
+httpx==0.28.1
+SQLAlchemy==2.0.43
+psycopg2==2.9.10
+
+# TEST
+pytest==8.4.1
+
+#TOOLS
+alembic==1.16.4
