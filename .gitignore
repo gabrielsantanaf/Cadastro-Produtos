@@ -337,7 +337,7 @@ settings/local.py
 .env.local
 .env.development
 .env.production
-.idea/
+.idea
 
 # Arquivos de upload
 uploads/
