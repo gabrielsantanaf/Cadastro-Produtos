@@ -1,0 +1,6 @@
+fastapi==0.116.1
+uvicorn==0.35.0
+tortoise-orm==0.20.0
+aerich==0.7.2
+asyncpg==0.29.0
+pydantic==2.11.7

@@ -1,94 +1,88 @@
 from decimal import Decimal
 from enum import Enum
-from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException
+from typing import List
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-from sqlalchemy.orm import Session
+from tortoise.exceptions import IntegrityError
 from cadastro_de_projetos.models.cadastro_de_projetos_model import CadastroDeProjetos
-from shared.dependencies import get_db
 
-router = APIRouter(prefix="/cadastro-de-projetos")
+router = APIRouter(prefix="/cadastro-de-projetos", tags=["Operações com o cadastro"])
 
 
 class StatusEnum(str, Enum):
-    ativo = 'ativo'
-    pausado = 'pausado'
-    finalizado = 'finalizado'
+    ativo       = 'ativo'
+    pausado     = 'pausado'
+    finalizado  = 'finalizado'
 
 
 class CadastrarProjetoResponse(BaseModel):
-    id: int
-    name: str  # Corrigido para coincidir com o model
-    description: str  # Corrigido para coincidir com o model
-    status: StatusEnum
+    id:          int
+    name:        str
+    description: str
+    status:      StatusEnum
 
     class Config:
-        from_attributes = True  # Substitui orm_mode no Pydantic v2
+        from_attributes = True
         json_encoders = {
             Decimal: float
         }
 
 
 class CadastrarProjetoRequest(BaseModel):
-    name: str = Field(min_length=1)  # Corrigido
-    description: str = Field(min_length=3)  # Corrigido
-    status: StatusEnum = StatusEnum.ativo  # Valor padrão
+    name: str = Field(min_length=1)
+    description: str = Field(min_length=3)
+    status: StatusEnum = StatusEnum.ativo
 
 
-# GET - Buscar projeto por ID
-@router.get("/{id}", response_model=CadastrarProjetoResponse)
-def pegar_projeto(id: int, db: Session = Depends(get_db)) -> CadastrarProjetoResponse:
-    projeto = db.query(CadastroDeProjetos).filter(CadastroDeProjetos.id == id).first()
+@router.get("/", response_model=List[CadastrarProjetoResponse])
+async def listar_projetos() -> List[CadastrarProjetoResponse]:
+    projeto = await CadastroDeProjetos().all()
+    return [CadastrarProjetoResponse.model_validate(p) for p in projeto]
+
+@router.get("/{projeto_id}", response_model=CadastrarProjetoResponse)
+async def pegar_projeto(projeto_id: int):
+    projeto = await CadastroDeProjetos.get_or_none(id=projeto_id)
     if not projeto:
         raise HTTPException(status_code=404, detail="Projeto não encontrado")
     return projeto
 
 
-# GET - Listar todos os projetos
-@router.get("/", response_model=List[CadastrarProjetoResponse])
-def listar_projetos(db: Session = Depends(get_db)) -> List[CadastrarProjetoResponse]:
-    projetos = db.query(CadastroDeProjetos).all()
-    return projetos
-
-
-# POST - Criar novo projeto
 @router.post("/", response_model=CadastrarProjetoResponse)
-def criar_projeto(projeto: CadastrarProjetoRequest, db: Session = Depends(get_db)) -> CadastrarProjetoResponse:
-    novo_projeto = CadastroDeProjetos(
-        name=projeto.name,
-        description=projeto.description,
-        status=projeto.status
-    )
-    db.add(novo_projeto)
-    db.commit()
-    db.refresh(novo_projeto)
-    return novo_projeto
+async def criar_projeto(projeto: CadastrarProjetoRequest) -> CadastrarProjetoResponse:
+    try:
+        novo_projeto = await CadastroDeProjetos.create(
+            name=projeto.name,
+            description=projeto.description,
+            status=projeto.status
+        )
+        return CadastrarProjetoResponse.model_validate(novo_projeto)
+    except IntegrityError:
+        raise HTTPException(status_code=400, detail="Já existe um projeto como esse")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-# PUT - Atualizar projeto
-@router.put("/{id}", response_model=CadastrarProjetoResponse)
-def atualizar_projeto(id: int, projeto: CadastrarProjetoRequest,
-                      db: Session = Depends(get_db)) -> CadastrarProjetoResponse:
-    projeto_existente = db.query(CadastroDeProjetos).filter(CadastroDeProjetos.id == id).first()
-    if not projeto_existente:
-        raise HTTPException(status_code=404, detail="Projeto não encontrado")
+@router.put("/{projeto_id}", response_model=CadastrarProjetoResponse)
+async def atualizar_projeto(projeto_id: int, body: CadastrarProjetoRequest) -> CadastrarProjetoResponse:
+    projeto = await CadastroDeProjetos.get_or_none(id=projeto_id)
 
-    projeto_existente.name = projeto.name
-    projeto_existente.description = projeto.description
-    projeto_existente.status = projeto.status
-
-    db.commit()
-    db.refresh(projeto_existente)
-    return projeto_existente
-
-
-# DELETE - Deletar projeto
-@router.delete("/{id}")
-def deletar_projeto(id: int, db: Session = Depends(get_db)):
-    projeto = db.query(CadastroDeProjetos).filter(CadastroDeProjetos.id == id).first()
     if not projeto:
         raise HTTPException(status_code=404, detail="Projeto não encontrado")
 
-    db.delete(projeto)
-    db.commit()
+    update_projeto = body.model_dump(exclude_unset=True)
+
+    await projeto.update_from_dict(update_projeto)
+    await projeto.save()
+
+    return CadastrarProjetoResponse.model_validate(projeto, from_attributes=True)
+
+@router.delete("/{projeto_id}")
+async def deletar_projeto(projeto_id: int):
+    projeto = await CadastroDeProjetos.get_or_none(id=projeto_id)
+
+    if not projeto:
+        raise HTTPException(status_code=404, detail="Projeto não encontrado")
+
+    await projeto.delete()
+
     return {"message": "Projeto deletado com sucesso"}

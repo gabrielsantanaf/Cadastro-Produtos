@@ -1,18 +1,24 @@
-from datetime import datetime, timezone
-from sqlalchemy import Column, Integer, String, Text, DateTime
-from shared.database import Base
+from enum import Enum
 
+from tortoise.models import Model
+from tortoise import fields
 
-class CadastroDeProjetos(Base):
-    __tablename__ = "cadastro_projetos"  # Nome mais descritivo
+class Status(Enum):
+    ATIVO = "ativo"
+    PAUSADO = "pausado"
+    FINALIZADO = "finalizado"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    name = Column(String(255), nullable=False, index=True)  # Limite de caracteres + índice
-    description = Column(Text, nullable=True)  # Explicitamente nullable
-    status = Column(String(20), default="ativo", nullable=False)  # Limite de caracteres
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc),
-                        onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+class CadastroDeProjetos(Model):
 
-    def __repr__(self):
-        return f"<CadastroDeProjetos(id={self.id}, name='{self.name}', status='{self.status}')>"
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=100)
+    description = fields.TextField()
+    status = fields.CharEnumField(Status, default=Status.ATIVO)
+    created_at = fields.DatetimeField(auto_now_add=True)
+    updated_at = fields.DatetimeField(auto_now=True)
+
+    class Meta:
+        table = "cadastro_de_projetos"
+
+    def __str__(self):
+        return f"{self.name}"
