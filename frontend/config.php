@@ -1,5 +1,5 @@
 <?php
-// Configuração para ambiente Docker
+// Configuração ambiente Docker
 define('API_BASE_URL', 'http://backend:8000');
 
 class ApiClient {
