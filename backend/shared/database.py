@@ -6,11 +6,11 @@ DATABASE_CONFIG = {
         "default": {
             "engine": "tortoise.backends.asyncpg",
             "credentials": {
-                "host": "localhost",
-                "port": 8060,
+                "host": "postgres",
+                "port": 5432,
                 "user": "postgres",
-                "password": "1234",
-                "database": "db_teste_tortoise",
+                "password": "postgres123",
+                "database": "projects_db",
             }
         }
     },

@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Banco de dados PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: projects_db
+    environment:
+      POSTGRES_DB: projects_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - projects_network
+
+  # Backend Python FastAPI
+  backend:
+    build: ./backend
+    container_name: projects_backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/projects_db
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+    networks:
+      - projects_network
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Frontend PHP
+  frontend:
+    build: ./frontend
+    container_name: projects_frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/var/www/html
+    depends_on:
+      - backend
+    networks:
+      - projects_network
+
+volumes:
+  postgres_data:
+
+networks:
+  projects_network:
+    driver: bridge
