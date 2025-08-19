@@ -1,5 +1,4 @@
 <?php
-// config.php (substitua a classe ApiClient existente por esta)
 
 define('API_BASE_URL', 'http://backend:8000/');
 
@@ -37,7 +36,6 @@ class ApiClient {
                 break;
             case 'GET':
             default:
-                // GET padrão
                 break;
         }
 
@@ -65,13 +63,11 @@ class ApiClient {
             return [
                 'status' => $apiStatus,
                 'data' => $apiData,
-                'raw' => $decoded // opcional para debug
+                'raw' => $decoded
             ];
         }
 
-        // Caso contrário, retorna o HTTP code e o corpo decodificado (ou raw)
         if ($decoded === null && json_last_error() !== JSON_ERROR_NONE) {
-            // resposta não-JSON
             return [
                 'status' => $httpCode,
                 'data' => ['raw' => $response, 'json_error' => json_last_error_msg()]
@@ -85,7 +81,7 @@ class ApiClient {
     }
 
     public function getProjects() {
-        return $this->makeRequest('GET', 'cadastro-de-projetos/'); // com slash final para evitar redirect
+        return $this->makeRequest('GET', 'cadastro-de-projetos/');
     }
 
     public function getProject($id) {
