@@ -197,7 +197,7 @@ $title = 'Lista de Projetos';
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 Gerenciador de Projetos</h1>
+            <h1>🚀 Gerenciador de Projetos 🚀</h1>
             <nav class="nav">
                 <a href="index.php">Todos os Projetos</a>
                 <a href="create.php">Novo Projeto</a>
