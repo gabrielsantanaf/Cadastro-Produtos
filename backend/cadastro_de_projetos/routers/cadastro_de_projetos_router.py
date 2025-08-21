@@ -1,46 +1,10 @@
-from datetime import datetime
-from decimal import Decimal
-from enum import Enum
-from typing import List
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
+from fastapi import APIRouter
 from tortoise.exceptions import IntegrityError
 from ..models.cadastro_de_projetos_model import CadastroDeProjetos
-
+from ..routers.schemas import  CadastrarProjetoResponse, CadastrarProjetoRequest, ApiResponse
 router = APIRouter(prefix="/cadastro-de-projetos", tags=["Operações com o cadastro"])
 
-
-class StatusEnum(str, Enum):
-    ativo       = 'ativo'
-    pausado     = 'pausado'
-    finalizado  = 'finalizado'
-
-
-class CadastrarProjetoResponse(BaseModel):
-    id:          int
-    name:        str
-    description: str
-    status:      StatusEnum
-    created_at:  datetime
-
-    class Config:
-        from_attributes = True
-        json_encoders = {
-            Decimal: float
-        }
-
-class ApiResponse(BaseModel):
-    status: int
-    data: List[CadastrarProjetoResponse] | CadastrarProjetoResponse | dict | None = None
-    message: str = ""
-
-class CadastrarProjetoRequest(BaseModel):
-    name: str = Field(min_length=1)
-    description: str = Field(min_length=3)
-    status: StatusEnum = StatusEnum.ativo
-
-
-@router.get("/")
+@router.get("/", response_model=ApiResponse)
 async def listar_projetos():
     try:
         projetos = await CadastroDeProjetos.all()
@@ -58,7 +22,7 @@ async def listar_projetos():
         }
 
 
-@router.get("/{projeto_id}")
+@router.get("/{projeto_id}", response_model=ApiResponse)
 async def pegar_projeto(projeto_id: int):
     try:
         projeto = await CadastroDeProjetos.get_or_none(id=projeto_id)
@@ -82,7 +46,7 @@ async def pegar_projeto(projeto_id: int):
         }
 
 
-@router.post("/")
+@router.post("/", response_model=ApiResponse)
 async def criar_projeto(projeto: CadastrarProjetoRequest):
     try:
         novo_projeto = await CadastroDeProjetos.create(
@@ -109,7 +73,7 @@ async def criar_projeto(projeto: CadastrarProjetoRequest):
         }
 
 
-@router.put("/{projeto_id}")
+@router.put("/{projeto_id}", response_model=ApiResponse)
 async def atualizar_projeto(projeto_id: int, body: CadastrarProjetoRequest):
     try:
         projeto = await CadastroDeProjetos.get_or_none(id=projeto_id)
@@ -138,7 +102,7 @@ async def atualizar_projeto(projeto_id: int, body: CadastrarProjetoRequest):
         }
 
 
-@router.delete("/{projeto_id}")
+@router.delete("/{projeto_id}", response_model=ApiResponse)
 async def deletar_projeto(projeto_id: int):
     try:
         projeto = await CadastroDeProjetos.get_or_none(id=projeto_id)
