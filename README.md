@@ -71,28 +71,20 @@ docker-compose up --build
 - ⚡Backend (FastAPI): 👉 http://localhost:8000
 - 📖 Docs interativas do FastAPI: 👉 http://localhost:8000/docs
 
-# 📖 Funcionalidades
-✅ Listagem de projetos
-✅ Criação de projetos
-✅ Edição de projetos
-✅ Exclusão de projetos
-
-# 🔗 Integração do PHP (frontend) com o FastAPI (backend) via API REST
-
-👨‍💻 Contribuição
+# 👨‍💻 Contribuição
 Faça um fork do projeto 🍴
 
-Crie uma branch para sua feature:
+## 1. Crie uma branch para sua feature:
 ```bash
 git checkout -b minha-feature
 ```
 
-Commit suas alterações:
+## 2. Commit suas alterações:
 ```bash
 git commit -m 'Adiciona minha feature'
 ```
 
-Faça push para sua branch:
+##3. Faça push para sua branch:
 ```bash
 git push origin minha-feature
 ```
