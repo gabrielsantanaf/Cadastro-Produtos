@@ -25,7 +25,7 @@ O objetivo é permitir que usuários façam o gerenciamento de projetos de forma
 ### 🔹 Infraestrutura
 - 🐳 **Docker**
 - ⚙️ **Docker Compose**
-- 🛢️ Banco de dados configurável (**SQLite**, **PostgreSQL** ou **MySQL**)
+- 🛢️ **PostgreSQL**
 
 ---
 
@@ -67,9 +67,9 @@ docker-compose up --build
 ```
 ## 3. Acessar os serviços
 
-🌐Frontend (PHP/Apache): 👉 http://localhost:8080
-⚡Backend (FastAPI): 👉 http://localhost:8000
-📖 Docs interativas do FastAPI: 👉 http://localhost:8000/docs
+- 🌐Frontend (PHP/Apache): 👉 http://localhost:8080
+- ⚡Backend (FastAPI): 👉 http://localhost:8000
+- 📖 Docs interativas do FastAPI: 👉 http://localhost:8000/docs
 
 # 📖 Funcionalidades
 ✅ Listagem de projetos
