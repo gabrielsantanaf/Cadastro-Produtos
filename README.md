@@ -66,8 +66,9 @@ cd cadastro-projetos
 docker-compose up --build
 ```
 ## 3. Acessar os serviços
-🌐 Frontend (PHP/Apache): 👉 http://localhost:8080
-⚡ Backend (FastAPI): 👉 http://localhost:8000
+
+🌐Frontend (PHP/Apache): 👉 http://localhost:8080
+⚡Backend (FastAPI): 👉 http://localhost:8000
 📖 Docs interativas do FastAPI: 👉 http://localhost:8000/docs
 
 # 📖 Funcionalidades
