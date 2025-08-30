@@ -55,28 +55,28 @@ CadastroProjetos/
 │── README.md
 ```
 
-#🚀 Como Rodar o Projeto
-##1. Clonar o repositório
+# 🚀 Como Rodar o Projeto
+## 1. Clonar o repositório
 ```bash
 git clone https://github.com/seu-usuario/cadastro-projetos.git
 cd cadastro-projetos
 ```
-##2. Rodar com Docker
+## 2. Rodar com Docker
 ```bash
 docker-compose up --build
 ```
-##3. Acessar os serviços
+## 3. Acessar os serviços
 🌐 Frontend (PHP/Apache): 👉 http://localhost:8080
 ⚡ Backend (FastAPI): 👉 http://localhost:8000
 📖 Docs interativas do FastAPI: 👉 http://localhost:8000/docs
 
-#📖 Funcionalidades
+# 📖 Funcionalidades
 ✅ Listagem de projetos
 ✅ Criação de projetos
 ✅ Edição de projetos
 ✅ Exclusão de projetos
 
-#🔗 Integração do PHP (frontend) com o FastAPI (backend) via API REST
+# 🔗 Integração do PHP (frontend) com o FastAPI (backend) via API REST
 
 👨‍💻 Contribuição
 Faça um fork do projeto 🍴
