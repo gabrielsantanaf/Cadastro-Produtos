@@ -1,37 +1,37 @@
-📌 Cadastro de Projetos
+# 📌 Cadastro de Projetos
 
-Este é um sistema de cadastro de projetos com backend em FastAPI (Python) e frontend em PHP (Apache).
-O objetivo é permitir que usuários façam o gerenciamento de projetos de forma organizada, com operações de cadastro, edição, listagem e exclusão.
+Este é um sistema de **cadastro de projetos** com **backend em FastAPI (Python)** e **frontend em PHP (Apache)**.  
+O objetivo é permitir que usuários façam o gerenciamento de projetos de forma organizada, com operações de:
 
-⚙️ Tecnologias Utilizadas
-🔹 Backend
+- ✅ Cadastro  
+- ✅ Edição  
+- ✅ Listagem  
+- ✅ Exclusão  
 
-Python 3.11+
+---
 
-FastAPI
- – Framework web rápido e moderno
+## ⚙️ Tecnologias Utilizadas
 
-Tortoise ORM
- – ORM para manipulação do banco
+### 🔹 Backend
+- 🐍 **Python 3.11+**
+- ⚡ **FastAPI** – Framework web rápido e moderno
+- 🗂️ **Tortoise ORM** – ORM para manipulação do banco
+- 🚀 **Uvicorn** – Servidor ASGI para rodar o FastAPI
 
-Uvicorn
- – Servidor ASGI para rodar o FastAPI
+### 🔹 Frontend
+- 🐘 **PHP 8+**
+- 🌐 **Apache**
 
-🔹 Frontend
+### 🔹 Infraestrutura
+- 🐳 **Docker**
+- ⚙️ **Docker Compose**
+- 🛢️ Banco de dados configurável (**SQLite**, **PostgreSQL** ou **MySQL**)
 
-PHP 8+
+---
 
-Apache
+## 📂 Estrutura do Projeto
 
-🔹 Infraestrutura
-
-Docker
-
-Docker Compose
-
-Banco de dados configurável (SQLite, PostgreSQL ou MySQL)
-
-📂 Estrutura do Projeto
+```bash
 CadastroProjetos/
 │── backend/
 │   ├── cadastro_de_projetos/
@@ -53,43 +53,49 @@ CadastroProjetos/
 │── docker-compose.yml               # Orquestração de containers
 │── .gitignore
 │── README.md
+```
 
-🚀 Como Rodar o Projeto
-1. Clonar o repositório
+#🚀 Como Rodar o Projeto
+##1. Clonar o repositório
+```bash
 git clone https://github.com/seu-usuario/cadastro-projetos.git
 cd cadastro-projetos
-
-2. Rodar com Docker
+```
+##2. Rodar com Docker
+```bash
 docker-compose up --build
+```
+##3. Acessar os serviços
+🌐 Frontend (PHP/Apache): 👉 http://localhost:8080
+⚡ Backend (FastAPI): 👉 http://localhost:8000
+📖 Docs interativas do FastAPI: 👉 http://localhost:8000/docs
 
-3. Acessar
-
-Frontend (PHP/Apache): 👉 http://localhost:8080
-
-Backend (FastAPI): 👉 http://localhost:8000
-
-Docs interativas do FastAPI: 👉 http://localhost:8000/docs
-
-📖 Funcionalidades
-
+#📖 Funcionalidades
 ✅ Listagem de projetos
 ✅ Criação de projetos
 ✅ Edição de projetos
 ✅ Exclusão de projetos
-✅ Integração do PHP (frontend) com o FastAPI (backend) via API REST
+
+#🔗 Integração do PHP (frontend) com o FastAPI (backend) via API REST
 
 👨‍💻 Contribuição
+Faça um fork do projeto 🍴
 
-Faça um fork do projeto
+Crie uma branch para sua feature:
+```bash
+git checkout -b minha-feature
+```
 
-Crie uma branch com a feature (git checkout -b minha-feature)
+Commit suas alterações:
+```bash
+git commit -m 'Adiciona minha feature'
+```
 
-Commit suas alterações (git commit -m 'Adiciona minha feature')
-
-Faça push para a branch (git push origin minha-feature)
-
+Faça push para sua branch:
+```bash
+git push origin minha-feature
+```
 Abra um Pull Request 🚀
 
 📜 Licença
-
 Este projeto está sob a licença MIT.
